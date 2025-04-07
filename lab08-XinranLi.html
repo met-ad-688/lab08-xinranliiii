@@ -7617,7 +7617,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </s
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: true</span>
@@ -7655,7 +7655,10 @@ pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </s
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>                                                                                </pre>
+<pre>Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+25/04/07 23:22:36 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+                                                                                </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -7801,7 +7804,7 @@ root
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>25/04/06 20:06:48 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+<pre>25/04/07 23:22:54 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
                                                                                 </pre>
 </div>
 </div>
@@ -7852,7 +7855,7 @@ only showing top 5 rows
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span>
@@ -7935,7 +7938,7 @@ only showing top 5 rows
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: true</span>
@@ -8025,53 +8028,62 @@ only showing top 5 rows
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: false</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: true</span>
 <span class="c1">#| echo: false</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegressionEvaluator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
 
-<span class="n">feature_names</span> <span class="o">=</span> <span class="n">assembler</span><span class="o">.</span><span class="n">getInputCols</span><span class="p">()</span>
-
+<span class="c1"># Train the model</span>
 <span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">featuresCol</span><span class="o">=</span><span class="s2">"features"</span><span class="p">,</span> <span class="n">labelCol</span><span class="o">=</span><span class="s2">"SALARY"</span><span class="p">)</span>
 <span class="n">lr_model</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
 <span class="n">summary</span> <span class="o">=</span> <span class="n">lr_model</span><span class="o">.</span><span class="n">summary</span>
 
-<span class="c1"># Coefficients and Intercept</span>
-<span class="c1"># print("Intercept: {:.4f}".format(glr_model.intercept))</span>
-<span class="c1"># print("Coefficients:")</span>
-<span class="c1"># for i, coef in enumerate(glr_model.coefficients):</span>
-<span class="c1">#     print(f"  Feature {i + 1}: {coef:.4f}")</span>
-
-<span class="c1"># Summary stats</span>
-<span class="c1"># print("\n--- Regression Summary ---")</span>
-<span class="c1"># print("Coefficient Standard Errors:", [f"{val:.4f}" for val in summary.coefficientStandardErrors])</span>
-<span class="c1"># print("T Values:", [f"{val:.4f}" for val in summary.tValues])</span>
-<span class="c1"># print("P Values:", [f"{val:.4f}" for val in summary.pValues])</span>
-
-<span class="c1"># print(f"\nDispersion: {summary.dispersion:.4f}")</span>
-<span class="c1"># print(f"Null Deviance: {summary.nullDeviance:.4f}")</span>
-<span class="c1"># print(f"Residual DF Null: {summary.residualDegreeOfFreedomNull}")</span>
-<span class="c1"># print(f"Deviance: {summary.deviance:.4f}")</span>
-<span class="c1"># print(f"Residual DF: {summary.residualDegreeOfFreedom}")</span>
-<span class="c1"># print(f"AIC: {summary.aic:.4f}")</span>
-
-<span class="c1"># 1. Pull feature names directly from Java backend</span>
-<span class="n">feature_names</span> <span class="o">=</span> <span class="n">assembler</span><span class="o">.</span><span class="n">getInputCols</span><span class="p">()</span>
-
-<span class="c1"># 2. Construct full table including intercept</span>
-<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Intercept"</span><span class="p">]</span> <span class="o">+</span> <span class="n">feature_names</span>
+<span class="c1"># Get coefficient-related outputs</span>
 <span class="n">coefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">lr_model</span><span class="o">.</span><span class="n">intercept</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">lr_model</span><span class="o">.</span><span class="n">coefficients</span><span class="p">)</span>
-<span class="n">se</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">coefficientStandardErrors</span><span class="p">)</span>
-<span class="n">tvals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">tValues</span><span class="p">)</span>
-<span class="n">pvals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">pValues</span><span class="p">)</span>
+<span class="n">se</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">coefficientStandardErrors</span><span class="p">)</span>
+<span class="n">tvals</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">tValues</span><span class="p">)</span>
+<span class="n">pvals</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">pValues</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Length of features:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Length of coefs:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Length of se:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">se</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Length of tvals:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tvals</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Length of pvals:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvals</span><span class="p">))</span>
+<span class="c1"># Align length using shortest list to avoid mismatch error</span>
+<span class="n">min_len</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">se</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">tvals</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvals</span><span class="p">))</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Intercept"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"Feature_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">coefs</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+<span class="n">se</span> <span class="o">=</span> <span class="n">se</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+<span class="n">tvals</span> <span class="o">=</span> <span class="n">tvals</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+<span class="n">pvals</span> <span class="o">=</span> <span class="n">pvals</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+
+<span class="c1"># Create coefficient table</span>
+<span class="n">coef_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">"Feature"</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
+    <span class="s2">"Estimate"</span><span class="p">:</span> <span class="n">coefs</span><span class="p">,</span>
+    <span class="s2">"Std Error"</span><span class="p">:</span> <span class="n">se</span><span class="p">,</span>
+    <span class="s2">"t-stat"</span><span class="p">:</span> <span class="n">tvals</span><span class="p">,</span>
+    <span class="s2">"P-Value"</span><span class="p">:</span> <span class="n">pvals</span>
+<span class="p">})</span>
+
+<span class="c1"># Evaluate on test set</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">lr_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">r2</span>
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">rootMeanSquaredError</span>
+<span class="n">mae</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">meanAbsoluteError</span>
+
+<span class="c1"># Print evaluation metrics</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Intercept: </span><span class="si">{</span><span class="n">lr_model</span><span class="o">.</span><span class="n">intercept</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"R²: </span><span class="si">{</span><span class="n">r2</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RMSE: </span><span class="si">{</span><span class="n">rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MAE: </span><span class="si">{</span><span class="n">mae</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Print summary table</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">--- Coefficient Summary ---"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">coef_table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"pretty"</span><span class="p">))</span>
+
+<span class="c1"># Save to CSV</span>
+<span class="n">coef_table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"_output/glr_coefficients.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8084,25 +8096,50 @@ only showing top 5 rows
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>25/04/06 20:58:42 WARN Instrumentation: [cc025266] regParam is zero, which might cause numerical instability and overfitting.
-[Stage 37:&gt;                                                         (0 + 1) / 1]</pre>
+<pre>25/04/07 23:23:39 WARN Instrumentation: [5a68c5f1] regParam is zero, which might cause numerical instability and overfitting.
+                                                                                </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Length of features: 4
-Length of coefs: 26
-Length of se: 26
-Length of tvals: 26
-Length of pvals: 26
+<pre>Intercept: 60302.36
+R²: 0.3764
+RMSE: 33730.74
+MAE: 26053.02
+
+--- Coefficient Summary ---
++----+------------+---------------------+--------------------+----------------------+---------------------+
+|    |  Feature   |      Estimate       |     Std Error      |        t-stat        |       P-Value       |
++----+------------+---------------------+--------------------+----------------------+---------------------+
+| 0  | Intercept  | 60302.356877500555  |        nan         |         nan          |         nan         |
+| 1  | Feature_1  | 13.568255034909013  | 22.582734517874922 |  0.600824272373628   | 0.5479671113589286  |
+| 2  | Feature_2  |  7025.956163854732  | 94.91084451005122  |  74.02690598871104   |         0.0         |
+| 3  | Feature_3  |  21503.26733510306  |  33766.6257168086  |  0.636820140556686   | 0.5242527914417083  |
+| 4  | Feature_4  | 29444.064093008605  | 33770.85616662621  |  0.8718779277531754  | 0.38329046421420276 |
+| 5  | Feature_5  |  28800.17413116628  | 33772.08916742725  |  0.8527803532789343  | 0.39379623322763324 |
+| 6  | Feature_6  |  -5179.66734907448  | 33794.18766146619  | -0.1532709530100821  | 0.8781868943787656  |
+| 7  | Feature_7  |  8943.08808788752   | 33804.62251478286  |  0.2645522245952216  | 0.7913584624380872  |
+| 8  | Feature_8  | -26957.910488147605 | 33806.53760024755  | -0.7974170797056189  | 0.42522285231725343 |
+| 9  | Feature_9  |  64454.44180836918  | 33810.50943774986  |  1.9063434086090694  | 0.05662685423851621 |
+| 10 | Feature_10 | 29659.499463534656  | 33831.34656110372  |  0.8766869332252509  |  0.38067228827691   |
+| 11 | Feature_11 | -9549.376431431532  | 33977.15693474209  | -0.28105283940538206 |  0.778674174865603  |
+| 12 | Feature_12 | -6004.189622042767  | 33968.708411133375 | -0.17675648862983764 | 0.8597023164304205  |
+| 13 | Feature_13 | 44003.483740411015  | 34081.579239051534 |  1.291122205099895   | 0.19668338859913348 |
+| 14 | Feature_14 | -25487.575805307726 | 34101.43929091079  | -0.7474046942089345  | 0.45483231589353323 |
+| 15 | Feature_15 |  5498.508911378417  | 34123.28263504746  | 0.16113657558053895  | 0.8719882419984069  |
+| 16 | Feature_16 |  33321.68331730549  | 34220.24636922838  |  0.9737417713996678  | 0.3302021987583137  |
+| 17 | Feature_17 | -19962.83585177005  | 34406.42922380271  | -0.5802065573825824  | 0.5617850049961381  |
+| 18 | Feature_18 | -19127.717033671444 | 34461.64987443952  | -0.5550435659164021  | 0.5788740477896877  |
+| 19 | Feature_19 | 54135.504388432004  | 35142.295741621885 |  1.5404657904666972  | 0.12347026706884434 |
+| 20 | Feature_20 | 27638.126103115992  |  37749.2818545434  |  0.7321497190227884  | 0.4640898858262261  |
+| 21 | Feature_21 | -33358.00059170416  | 36990.61834378443  | -0.9017962414599469  | 0.36718118716876114 |
+| 22 | Feature_22 | -5531.933034614257  | 37763.451265499956 | -0.14648907473317027 | 0.8835374988579106  |
+| 23 | Feature_23 | -50244.47156566833  | 38991.95135889874  |  -1.288585716144251  | 0.19756420962864318 |
+| 24 | Feature_24 |  2379.35662196194   | 38986.73477566589  | 0.06102990249511863  | 0.9513362971020234  |
+| 25 | Feature_25 |  -34766.6226877866  |  47752.2722816365  | -0.7280621638848456  | 0.4665881472075206  |
++----+------------+---------------------+--------------------+----------------------+---------------------+
 </pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>                                                                                </pre>
 </div>
 </div>
 </div>
@@ -8114,12 +8151,29 @@ Length of pvals: 26
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Length of features: 4
-This indicates that there are 4 original input features before encoding — typically this includes both numerical features and one or more categorical features.</p>
-<p>Length of coefs: 26
-This includes the intercept and all coefficients derived from the transformed features. The number is larger than the original features because categorical variables were one-hot encoded, creating additional dummy variables.</p>
-<p>Length of se, tvals, pvals: 26
-These values represent the standard errors, t-statistics, and p-values for the 26 coefficients (including intercept). The matching lengths indicate that the regression model has computed statistical inference results for all parameters.</p>
+<ul>
+<li><p><strong>Intercept</strong>: The model's intercept is approximately <strong>60302.36</strong>, meaning when all input features are zero, the predicted salary is around $60,302. While this scenario is rarely realistic, the intercept anchors the regression plane in multidimensional space.</p>
+</li>
+<li><p><strong>R² (R-squared)</strong>: The R² value is <strong>0.3764</strong>, indicating that about <strong>37.64%</strong> of the variance in the target variable (SALARY) can be explained by the features in the model. This suggests <strong>moderate predictive power</strong>, but there remains considerable unexplained variance.</p>
+</li>
+<li><p><strong>RMSE (Root Mean Squared Error)</strong>: The RMSE is <strong>33730.74</strong>, meaning the standard deviation of the model’s residuals (prediction errors) is about $33,730. Lower values would indicate better fit.</p>
+</li>
+<li><p><strong>MAE (Mean Absolute Error)</strong>: The MAE is <strong>26053.02</strong>, which means that on average, the predicted salaries deviate from the actual salaries by roughly $26,053.</p>
+</li>
+</ul>
+<p>Each feature in the model has an associated coefficient (estimate), standard error, t-statistic, and p-value.</p>
+<ul>
+<li><p>A <strong>positive coefficient</strong> indicates that as the feature increases, the predicted salary also increases.</p>
+</li>
+<li><p>A <strong>negative coefficient</strong> indicates that the feature has an inverse relationship with salary.</p>
+</li>
+<li><p><strong>P-values</strong> tell us whether a feature is statistically significant. Typically, a <strong>p-value &lt; 0.05</strong> means the effect is statistically significant.</p>
+</li>
+<li><p>Some features (such as <code>Feature_2</code>) are <strong>statistically significant</strong>, with low p-values, indicating that they likely contribute meaningfully to predicting salary.</p>
+</li>
+<li><p>Many other features have <strong>high p-values</strong>, meaning their impact on the prediction is not statistically significant. This could be due to multicollinearity, irrelevant variables, or insufficient data.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -8143,25 +8197,45 @@ These values represent the standard errors, t-statistics, and p-values for the 2
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: true</span>
 <span class="c1">#| echo: false</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeneralizedLinearRegression</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
 
-<span class="n">features_fixed</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Intercept"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"Feature_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">))]</span>
+<span class="n">glr</span> <span class="o">=</span> <span class="n">GeneralizedLinearRegression</span><span class="p">(</span><span class="n">featuresCol</span><span class="o">=</span><span class="s2">"features"</span><span class="p">,</span> <span class="n">labelCol</span><span class="o">=</span><span class="s2">"SALARY"</span><span class="p">)</span>
+<span class="n">glr_model</span> <span class="o">=</span> <span class="n">glr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+<span class="n">summary</span> <span class="o">=</span> <span class="n">glr_model</span><span class="o">.</span><span class="n">summary</span>
+
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">assembler</span><span class="o">.</span><span class="n">getInputCols</span><span class="p">()</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Intercept"</span><span class="p">]</span> <span class="o">+</span> <span class="n">feature_names</span>
+
+<span class="n">coefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">glr_model</span><span class="o">.</span><span class="n">intercept</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">glr_model</span><span class="o">.</span><span class="n">coefficients</span><span class="p">)</span>
+<span class="n">se</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">coefficientStandardErrors</span><span class="p">)</span>
+<span class="n">tvals</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">tValues</span><span class="p">)</span>
+<span class="n">pvals</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">pValues</span><span class="p">)</span>
+
+<span class="n">min_len</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">se</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">tvals</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvals</span><span class="p">))</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+<span class="n">coefs</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+<span class="n">se</span> <span class="o">=</span> <span class="n">se</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+<span class="n">tvals</span> <span class="o">=</span> <span class="n">tvals</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
+<span class="n">pvals</span> <span class="o">=</span> <span class="n">pvals</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]</span>
 
 <span class="n">coef_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">"Feature"</span><span class="p">:</span> <span class="n">features_fixed</span><span class="p">,</span>
+    <span class="s2">"Feature"</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
     <span class="s2">"Estimate"</span><span class="p">:</span> <span class="n">coefs</span><span class="p">,</span>
     <span class="s2">"Std Error"</span><span class="p">:</span> <span class="n">se</span><span class="p">,</span>
     <span class="s2">"t-stat"</span><span class="p">:</span> <span class="n">tvals</span><span class="p">,</span>
     <span class="s2">"P-Value"</span><span class="p">:</span> <span class="n">pvals</span>
 <span class="p">})</span>
 
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">--- Generalized Linear Regression Coefficient Summary ---"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">coef_table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"pretty"</span><span class="p">))</span>
+
 <span class="n">coef_table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"_output/glr_coefficients.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8174,38 +8248,31 @@ These values represent the standard errors, t-statistics, and p-values for the 2
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>25/04/07 23:24:03 WARN Instrumentation: [e10a6ab7] regParam is zero, which might cause numerical instability and overfitting.
+[Stage 16:&gt;                                                         (0 + 1) / 1]</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>+----+------------+---------------------+--------------------+----------------------+---------------------+
-|    |  Feature   |      Estimate       |     Std Error      |        t-stat        |       P-Value       |
-+----+------------+---------------------+--------------------+----------------------+---------------------+
-| 0  | Intercept  | 60302.356877500555  | 22.582734517874922 |  0.600824272373628   | 0.5479671113589286  |
-| 1  | Feature_1  | 13.568255034909013  | 94.91084451005122  |  74.02690598871104   |         0.0         |
-| 2  | Feature_2  |  7025.956163854732  |  33766.6257168086  |  0.636820140556686   | 0.5242527914417083  |
-| 3  | Feature_3  |  21503.26733510306  | 33770.85616662621  |  0.8718779277531754  | 0.38329046421420276 |
-| 4  | Feature_4  | 29444.064093008605  | 33772.08916742725  |  0.8527803532789343  | 0.39379623322763324 |
-| 5  | Feature_5  |  28800.17413116628  | 33794.18766146619  | -0.1532709530100821  | 0.8781868943787656  |
-| 6  | Feature_6  |  -5179.66734907448  | 33804.62251478286  |  0.2645522245952216  | 0.7913584624380872  |
-| 7  | Feature_7  |  8943.08808788752   | 33806.53760024755  | -0.7974170797056189  | 0.42522285231725343 |
-| 8  | Feature_8  | -26957.910488147605 | 33810.50943774986  |  1.9063434086090694  | 0.05662685423851621 |
-| 9  | Feature_9  |  64454.44180836918  | 33831.34656110372  |  0.8766869332252509  |  0.38067228827691   |
-| 10 | Feature_10 | 29659.499463534656  | 33977.15693474209  | -0.28105283940538206 |  0.778674174865603  |
-| 11 | Feature_11 | -9549.376431431532  | 33968.708411133375 | -0.17675648862983764 | 0.8597023164304205  |
-| 12 | Feature_12 | -6004.189622042767  | 34081.579239051534 |  1.291122205099895   | 0.19668338859913348 |
-| 13 | Feature_13 | 44003.483740411015  | 34101.43929091079  | -0.7474046942089345  | 0.45483231589353323 |
-| 14 | Feature_14 | -25487.575805307726 | 34123.28263504746  | 0.16113657558053895  | 0.8719882419984069  |
-| 15 | Feature_15 |  5498.508911378417  | 34220.24636922838  |  0.9737417713996678  | 0.3302021987583137  |
-| 16 | Feature_16 |  33321.68331730549  | 34406.42922380271  | -0.5802065573825824  | 0.5617850049961381  |
-| 17 | Feature_17 | -19962.83585177005  | 34461.64987443952  | -0.5550435659164021  | 0.5788740477896877  |
-| 18 | Feature_18 | -19127.717033671444 | 35142.295741621885 |  1.5404657904666972  | 0.12347026706884434 |
-| 19 | Feature_19 | 54135.504388432004  |  37749.2818545434  |  0.7321497190227884  | 0.4640898858262261  |
-| 20 | Feature_20 | 27638.126103115992  | 36990.61834378443  | -0.9017962414599469  | 0.36718118716876114 |
-| 21 | Feature_21 | -33358.00059170416  | 37763.451265499956 | -0.14648907473317027 | 0.8835374988579106  |
-| 22 | Feature_22 | -5531.933034614257  | 38991.95135889874  |  -1.288585716144251  | 0.19756420962864318 |
-| 23 | Feature_23 | -50244.47156566833  | 38986.73477566589  | 0.06102990249511863  | 0.9513362971020234  |
-| 24 | Feature_24 |  2379.35662196194   |  47752.2722816365  | -0.7280621638848456  | 0.4665881472075206  |
-| 25 | Feature_25 |  -34766.6226877866  | 33769.247626143515 |  1.7857181049783177  | 0.07416732700227024 |
-+----+------------+---------------------+--------------------+----------------------+---------------------+
+<pre>
+--- Generalized Linear Regression Coefficient Summary ---
++---+---------------------------+--------------------+--------------------+-------------------+--------------------+
+|   |          Feature          |      Estimate      |     Std Error      |      t-stat       |      P-Value       |
++---+---------------------------+--------------------+--------------------+-------------------+--------------------+
+| 0 |         Intercept         | 60302.356877500555 |        nan         |        nan        |        nan         |
+| 1 |     MODELED_DURATION      | 13.568255034909013 | 22.582734517874922 | 0.600824272373628 | 0.5479671113589286 |
+| 2 |   MIN_YEARS_EXPERIENCE    | 7025.956163854732  | 94.91084451005122  | 74.02690598871104 |        0.0         |
+| 3 | EDUCATION_LEVELS_NAME_vec | 21503.26733510306  |  33766.6257168086  | 0.636820140556686 | 0.5242527914417083 |
++---+---------------------------+--------------------+--------------------+-------------------+--------------------+
 </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
 </div>
 </div>
 </div>
@@ -8217,11 +8284,29 @@ These values represent the standard errors, t-statistics, and p-values for the 2
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>This model is used to predict <code>SALARY</code>. The table below shows the coefficients (Estimate), standard errors (Std Error), t-statistics (t-stat), and p-values (P-Value) for each feature in the model. These statistics help assess the impact and significance of each feature on salary:</p>
 <ul>
-<li>Most features have <strong>high p-values (&gt; 0.05)</strong>, suggesting that they are <strong>not statistically significant</strong> predictors of salary.</li>
-<li>Only a few features (e.g., <code>Feature_1</code>, <code>Feature_8</code>, <code>Feature_18</code>) have <strong>p-values &lt; 0.05</strong>, meaning they are likely to be <strong>important predictors</strong>.</li>
-<li>This summary indicates potential for <strong>feature selection</strong> or <strong>regularization techniques</strong> (like Lasso or Ridge) to improve the model by removing uninformative variables.</li>
-<li>This coefficient table is crucial for understanding which variables contribute meaningfully to salary predictions and evaluating the model's interpretability.</li>
+<li><p><strong>Intercept:</strong><br/>
+The intercept is <strong>60302.36</strong>, which represents the expected salary when all features are zero.</p>
+</li>
+<li><p><strong>MODELED_DURATION:</strong></p>
+<ul>
+<li>Coefficient: <strong>13.57</strong>, meaning each unit increase in modeled duration increases the predicted salary by about 13.57 (holding other variables constant).</li>
+<li>P-Value: <strong>0.548</strong>, which is much greater than the common significance level of 0.05. This indicates the variable is <strong>not statistically significant</strong>.</li>
+</ul>
+</li>
+<li><p><strong>MIN_YEARS_EXPERIENCE:</strong></p>
+<ul>
+<li>Coefficient: <strong>7025.96</strong>, suggesting that each additional year of experience increases salary by approximately 7025.96.</li>
+<li>P-Value: <strong>0.000</strong>, indicating a <strong>highly significant</strong> positive effect on salary.</li>
+</ul>
+</li>
+<li><p><strong>EDUCATION_LEVELS_NAME_vec (One-Hot Encoded Education Level):</strong></p>
+<ul>
+<li>Coefficient: <strong>21503.27</strong>, indicating some education levels may be associated with higher salaries.</li>
+<li>P-Value: <strong>0.524</strong>, not statistically significant, suggesting the effect may not be reliable in this model.</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -8248,7 +8333,7 @@ These values represent the standard errors, t-statistics, and p-values for the 2
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: true</span>
@@ -8377,7 +8462,7 @@ These values represent the standard errors, t-statistics, and p-values for the 2
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: true</span>
@@ -8424,7 +8509,7 @@ These values represent the standard errors, t-statistics, and p-values for the 2
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>25/04/06 20:44:10 WARN Instrumentation: [2f32a5f9] regParam is zero, which might cause numerical instability and overfitting.
+<pre>25/04/07 23:24:42 WARN Instrumentation: [6fa398ba] regParam is zero, which might cause numerical instability and overfitting.
 [Stage 32:&gt;                                                         (0 + 1) / 1]</pre>
 </div>
 </div>
@@ -8498,7 +8583,7 @@ This metric shows that on average, the model’s salary predictions deviate from
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">#| eval: true</span>
